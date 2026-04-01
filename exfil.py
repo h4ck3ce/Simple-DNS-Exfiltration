@@ -4,7 +4,7 @@ import base64
 # Configuration
 PCAP_FILE = "dns_capture.pcap"
 OUTPUT_FILE = "decoded_output.txt"
-TARGET_DOMAIN = "lab.local"
+TARGET_DOMAIN = "lab.domain" #replace with lab domain name used in one-liner
 
 def fix_padding(data):
     """Adds missing Base64 padding."""
